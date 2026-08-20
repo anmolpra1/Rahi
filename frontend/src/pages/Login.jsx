@@ -77,7 +77,12 @@ export default function Login() {
 
     try {
       const response = await apiClient.post("/auth/otp/send", { phone });
-      setSuccess(response.data.message || "OTP sent successfully! Check server logs.");
+      const demoOtp = response.data.otp;
+      if (demoOtp) {
+        setSuccess(`OTP sent successfully! For demo, use code: ${demoOtp}`);
+      } else {
+        setSuccess(response.data.message || "OTP sent successfully! Check server logs.");
+      }
       setStep(2);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to send OTP. Please try again.");
